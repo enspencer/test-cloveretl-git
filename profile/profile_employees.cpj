@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<job uuid="5701b44c-7c04-45e1-96fe-7c730e936763" modified="2013-02-15T17:10:25.408+01:00" created="2012-12-04T18:36:11.188+01:00" desc="Create a data quality report of employee data." name="profile_employees">
+    <property fileURL="workspace.prm" id="JobParameter0"/>
+    <sampling method="Simple" keys="" ratio="100" enabled="false"/>
+    <source>
+        <metadata metadataFile="${META_DIR}/employees.fmt"/>
+        <localfile charset="ISO-8859-1" file="${DATAIN_DIR}/05-ErrorHandling-DataQualityFirewall/employees.csv"/>
+    </source>
+    <listOfFunctions>
+        <metadataField type="string" name="firstName">
+            <function name="min_length"/>
+            <function name="avg_length"/>
+            <function name="max_len"/>
+            <function name="not_null_cnt" BlanksAsNulls="false"/>
+            <function name="most_frequent_format" PatternsCount="3"/>
+            <function name="freq_histogram" MaxUniqueValues="10000"/>
+        </metadataField>
+        <metadataField type="string" name="lastName">
+            <function name="min_length"/>
+            <function name="avg_length"/>
+            <function name="max_len"/>
+            <function name="not_null_cnt" BlanksAsNulls="false"/>
+            <function name="most_frequent_format" PatternsCount="3"/>
+            <function name="freq_histogram" MaxUniqueValues="10000"/>
+        </metadataField>
+        <metadataField type="string" name="sex">
+            <function name="min_length"/>
+            <function name="avg_length"/>
+            <function name="max_len"/>
+            <function name="not_null_cnt" BlanksAsNulls="false"/>
+            <function name="most_frequent_format" PatternsCount="3"/>
+            <function name="freq_histogram" MaxUniqueValues="10000"/>
+        </metadataField>
+        <metadataField type="date" name="birthDate">
+            <function name="min"/>
+            <function name="max"/>
+            <function name="not_null_cnt"/>
+            <function name="interval_histogram" EndDate="" Interval="" StartDate="" ShowOuter=""/>
+        </metadataField>
+        <metadataField type="string" name="hireDate">
+            <function name="min_length"/>
+            <function name="avg_length"/>
+            <function name="max_len"/>
+            <function name="not_null_cnt" BlanksAsNulls="false"/>
+            <function name="most_frequent_format" PatternsCount="3"/>
+            <function name="convert_to_date" Locale="en_GB_" Mask="yyyy-MM-dd"/>
+        </metadataField>
+        <metadataField type="number" name="salary">
+            <function name="min"/>
+            <function name="avg"/>
+            <function name="max"/>
+            <function name="not_null_cnt"/>
+            <function name="interval_histogram" MinValue="" ShowOuter="" MaxValue="" BucketsCount=""/>
+        </metadataField>
+    </listOfFunctions>
+</job>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Graph author="Wesley" created="Fri Aug 03 11:41:19 CEST 2012" guiVersion="4.1.0" id="1344000493136" licenseCode="CLP1DJAVLI58889773BY" licenseType="Commercial" modified="Fri Jul 24 17:32:19 CEST 2015" modifiedBy="magda" name="example04_2" revision="1.52" showComponentDetails="true">
+<Global>
+<Metadata id="Metadata2" previewAttachmentCharset="ISO-8859-1">
+<Record fieldDelimiter="|" name="recordName" previewAttachmentCharset="ISO-8859-1" recordDelimiter="\n" recordSize="-1" type="delimited">
+<Field eofAsDelimiter="false" label="Input File" name="Input_File" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" format="excel:yyyy-MM-dd HH:mm:ss" label="Processed Time" name="Execution_Time" nullable="true" shift="0" size="0" type="date"/>
+<Field eofAsDelimiter="false" label="Total Valid Records" name="Valid_Records" nullable="true" shift="0" size="0" type="long"/>
+<Field eofAsDelimiter="false" label="Number of Invalid Date Records" name="Invalid_Date" nullable="true" shift="0" size="0" type="long"/>
+<Field eofAsDelimiter="false" label="Number of Invalid ID or Zip Records" name="Invalid_ID_or_ZIP" nullable="true" shift="0" size="0" type="long"/>
+<Field eofAsDelimiter="false" label="Number of Illegal State Records" name="Illegal_State" nullable="true" shift="0" size="0" type="long"/>
+<Field eofAsDelimiter="false" label="Total Records" name="Total_Count" nullable="true" shift="0" size="0" type="long"/>
+</Record>
+</Metadata>
+<GraphParameters>
+<GraphParameterFile fileURL="param/parameters_04.prm"/>
+<GraphParameterFile fileURL="workspace.prm"/>
+</GraphParameters>
+<Note alignment="1" backgroundColorB="225" backgroundColorG="255" backgroundColorR="255" enabled="true" folded="false" height="116" id="Note1" textColorB="0" textColorG="0" textColorR="0" textFontSize="8" title="Example 04-2: Output Record Statistics" titleColorB="0" titleColorG="0" titleColorR="0" titleFontSize="10" width="558" x="20" y="20">
+<attr name="text"><![CDATA[
+1. Gather all record related statistics from parent graph
+
+2. Write statistics to a spreadsheet]]></attr>
+</Note>
+<Dictionary>
+<Entry dictval.value="0" input="true" name="dtIllegalState" output="true" type="long"/>
+<Entry input="true" name="dtExecutionTime" output="true" type="date"/>
+<Entry dictval.value="0" input="true" name="dtInvalidDate" output="true" type="long"/>
+<Entry dictval.value="0" input="true" name="dtInvalidIDorZIP" output="true" type="long"/>
+<Entry dictval.value="0" input="true" name="dtValidRecords" output="true" type="long"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" guiName="Get Record Stats" guiX="20" guiY="188" id="GET_RECORD_STATS" type="GET_JOB_INPUT">
+<attr name="mapping"><![CDATA[//#CTL2
+
+// Transforms input record into output record.
+function integer transform() {
+	$out.0.Illegal_State = $in.0.dtIllegalState;
+	$out.0.Execution_Time = $in.0.dtExecutionTime;
+	$out.0.Invalid_Date = $in.0.dtInvalidDate;
+	$out.0.Invalid_ID_or_ZIP = $in.0.dtInvalidIDorZIP;
+	$out.0.Valid_Records = $in.0.dtValidRecords;
+	$out.0.Total_Count = $in.0.dtIllegalState + $in.0.dtInvalidDate + $in.0.dtInvalidIDorZIP + $in.0.dtValidRecords;
+	$out.0.Input_File = "${INPUT_FILE}";
+
+	return OK;
+}
+
+// Called during component initialization.
+// function boolean init() {}
+
+// Called during each graph run before the transform is executed. May be used to allocate and initialize resources
+// required by the transform. All resources allocated within this method should be released
+// by the postExecute() method.
+// function void preExecute() {}
+
+// Called only if transform() throws an exception.
+// function integer transformOnError(string errorMessage, string stackTrace) {}
+
+// Called during each graph run after the entire transform was executed. Should be used to free any resources
+// allocated within the preExecute() method.
+// function void postExecute() {}
+
+// Called to return a user-defined error message when an error occurs.
+// function string getMessage() {}
+]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="GET_RECORD_STATS:0" guiBendpoints="" guiRouter="Manhattan" id="Edge8" inPort="Port 0 (input)" metadata="Metadata2" outPort="Port 0 (out)" toNode="WRITE_RECORD_STATS:0"/>
+</Phase>
+<Phase number="3">
+<Node enabled="enabled" existingSheetsActions="DO_NOTHING" fileURL="${OUTPUT_DIR}/${FINAL_STATS}" guiName="Write Record Stats" guiX="442" guiY="188" id="WRITE_RECORD_STATS" makeDirs="false" sheet="Record Stats" type="SPREADSHEET_WRITER" writeMode="OVERWRITE_SHEET_IN_MEMORY">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping>
+    <globalAttributes>
+        <orientation>HORIZONTAL</orientation>
+        <step>1</step>
+        <writeHeader>true</writeHeader>
+    </globalAttributes>
+    <defaultSkip>1</defaultSkip>
+    <headerGroups>
+        <headerGroup skip="1">
+            <cloverField>Input_File</cloverField>
+            <headerRanges>
+                <headerRange begin="B3"/>
+            </headerRanges>
+        </headerGroup>
+        <headerGroup skip="1">
+            <cloverField>Execution_Time</cloverField>
+            <headerRanges>
+                <headerRange begin="B4"/>
+            </headerRanges>
+        </headerGroup>
+        <headerGroup skip="1">
+            <cloverField>Valid_Records</cloverField>
+            <headerRanges>
+                <headerRange begin="B7"/>
+            </headerRanges>
+        </headerGroup>
+        <headerGroup skip="1">
+            <cloverField>Invalid_Date</cloverField>
+            <headerRanges>
+                <headerRange begin="B8"/>
+            </headerRanges>
+        </headerGroup>
+        <headerGroup skip="1">
+            <cloverField>Invalid_ID_or_ZIP</cloverField>
+            <headerRanges>
+                <headerRange begin="B9"/>
+            </headerRanges>
+        </headerGroup>
+        <headerGroup skip="1">
+            <cloverField>Illegal_State</cloverField>
+            <headerRanges>
+                <headerRange begin="B10"/>
+            </headerRanges>
+        </headerGroup>
+        <headerGroup skip="1">
+            <cloverField>Total_Count</cloverField>
+            <headerRanges>
+                <headerRange begin="B12"/>
+            </headerRanges>
+        </headerGroup>
+    </headerGroups>
+</mapping>
+]]></attr>
+</Node>
+</Phase>
+</Graph>

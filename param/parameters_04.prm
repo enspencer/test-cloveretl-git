@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GraphParameters>
+<GraphParameter name="BAD_CRT_DATE" value="R02-BadDates.dat"/>
+<GraphParameter name="BAD_ID_ZIP" value="R03-BadIDorZIP.dat"/>
+<GraphParameter name="BAD_ST_ABBV" value="R01-BadStates.dat"/>
+<GraphParameter name="CLEANED_OUTPUT" value="ValidRecords.xls"/>
+<GraphParameter name="DATAIN_04_DIR" value="${DATAIN_DIR}/04-ErrorHandling-RejectFiles">
+<SingleType multiple="true" name="file" selectionMode="directory_only"/>
+</GraphParameter>
+<GraphParameter name="DATAOUT_04_DIR" value="${DATAOUT_DIR}/${RUN_ID}/04-ErrorHandling-RejectFiles">
+<SingleType multiple="true" name="file" selectionMode="directory_only"/>
+</GraphParameter>
+<GraphParameter name="DATATMP_04_DIR" value="${DATATMP_DIR}/${RUN_ID}/04-ErrorHandling-RejectFiles">
+<SingleType multiple="true" name="file" selectionMode="directory_only"/>
+</GraphParameter>
+<GraphParameter name="FINAL_STATS" value="FinalStats.xls"/>
+<GraphParameter name="INPUT_FILE" value="customer_details_01.dat"/>
+<GraphParameter name="OUTPUT_DIR" value="${DATAOUT_DIR}">
+<SingleType multiple="true" name="file" selectionMode="directory_only"/>
+</GraphParameter>
+</GraphParameters>

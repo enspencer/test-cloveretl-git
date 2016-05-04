@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Graph author="Wesley" created="Fri Aug 03 11:41:19 CEST 2012" guiVersion="4.1.0" id="1344000493136" licenseCode="CLP1DJAVLI58889773BY" licenseType="Commercial" modified="Fri Jul 24 17:31:29 CEST 2015" modifiedBy="magda" name="example04_2" revision="1.51" showComponentDetails="true">
+<Global>
+<Metadata id="Metadata3">
+<Record fieldDelimiter="|" name="cleaned_records_cleaned_data" recordDelimiter="\r\n" type="delimited">
+<Field label="customerId" name="customerId" type="long"/>
+<Field label="firstname" name="firstname" type="string"/>
+<Field label="lastname" name="lastname" type="string"/>
+<Field label="address" name="address" type="string"/>
+<Field label="city" name="city" type="string"/>
+<Field label="zipcode" name="zipcode" type="long"/>
+<Field label="state" name="state" type="string"/>
+<Field format="excel:YYYY-MM-DD" label="createdDate" name="createdDate" type="date"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata0" previewAttachment="${DATAIN_04_DIR}/customer_details_01.dat" previewAttachmentCharset="ISO-8859-1">
+<Record fieldDelimiter="|" label="customer_details_01.dat" name="customer_details" previewAttachment="${DATAIN_04_DIR}/customer_details_01.dat" previewAttachmentCharset="ISO-8859-1" quoteChar="both" quotedStrings="false" recordDelimiter="\r\n" skipSourceRows="1" type="delimited">
+<Field name="customerId" type="string"/>
+<Field name="firstname" type="string"/>
+<Field name="lastname" type="string"/>
+<Field name="address" type="string"/>
+<Field name="city" type="string"/>
+<Field name="zipcode" type="string"/>
+<Field name="state" type="string"/>
+<Field eofAsDelimiter="false" name="createdDate" type="string"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata1" previewAttachmentCharset="ISO-8859-1">
+<Record fieldDelimiter="|" name="recordName" previewAttachmentCharset="ISO-8859-1" recordDelimiter="\n" type="delimited">
+<Field name="intCounter" type="integer"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata2" previewAttachmentCharset="ISO-8859-1">
+<Record fieldDelimiter="|" name="recordName" previewAttachmentCharset="ISO-8859-1" recordDelimiter="\n" recordSize="-1" type="delimited">
+<Field eofAsDelimiter="false" label="Total Clean Records" name="Clean_Count" nullable="true" shift="0" size="0" type="integer"/>
+<Field eofAsDelimiter="false" label="Number of Bad Creation Date Records" name="Bad_Crt_Date" nullable="true" shift="0" size="0" type="integer"/>
+<Field eofAsDelimiter="false" label="Number of Bad ID or Zip Records" name="Bad_Id_Zip" nullable="true" shift="0" size="0" type="integer"/>
+<Field eofAsDelimiter="false" label="Number of Bad State Abbv. Records" name="Bad_St_Abbv" nullable="true" shift="0" size="0" type="integer"/>
+<Field label="Total Records" name="Total_Count" type="integer"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata4">
+<Record fieldDelimiter="|" name="recordName" recordDelimiter="\n" recordSize="-1" type="delimited">
+<Field eofAsDelimiter="false" name="Output_Dir" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" name="File_Path_Name" nullable="true" shift="0" size="0" type="string"/>
+</Record>
+</Metadata>
+<GraphParameters>
+<GraphParameter name="FILE_NAME" value="value"/>
+<GraphParameterFile fileURL="param/parameters_04.prm"/>
+<GraphParameterFile fileURL="workspace.prm"/>
+</GraphParameters>
+<Note alignment="1" backgroundColorB="225" backgroundColorG="255" backgroundColorR="255" enabled="true" folded="false" height="111" id="Note1" textColorB="0" textColorG="0" textColorR="0" textFontSize="8" title="Example 01: Simple ETL transformation" titleColorB="0" titleColorG="0" titleColorR="0" titleFontSize="10" width="558" x="20" y="20">
+<attr name="text"><![CDATA[
+1. Read error records
+
+2. Add error records to the final spreadsheet]]></attr>
+</Note>
+<Dictionary>
+<Entry input="true" name="dtFilePathnName" output="true" type="string"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" existingSheetsActions="DO_NOTHING" fileURL="${OUTPUT_DIR}/${FINAL_STATS}" guiName="Add Records to Output" guiX="550" guiY="175" id="ADD_RECORDS_TO_OUTPUT" sheet="${FILE_NAME}" type="SPREADSHEET_WRITER" writeMode="OVERWRITE_SHEET_IN_MEMORY"/>
+<Node enabled="enabled" guiName="Get File Info" guiX="20" guiY="175" id="GET_FILE_INFO" type="GET_JOB_INPUT">
+<attr name="mapping"><![CDATA[//#CTL2
+
+// Transforms input record into output record.
+function integer transform() {
+	$out.0.Output_Dir = "${OUTPUT_DIR}";
+	$out.0.File_Path_Name = $in.0.dtFilePathnName;
+
+	return OK;
+}
+
+// Called during component initialization.
+// function boolean init() {}
+
+// Called during each graph run before the transform is executed. May be used to allocate and initialize resources
+// required by the transform. All resources allocated within this method should be released
+// by the postExecute() method.
+// function void preExecute() {}
+
+// Called only if transform() throws an exception.
+// function integer transformOnError(string errorMessage, string stackTrace) {}
+
+// Called during each graph run after the entire transform was executed. Should be used to free any resources
+// allocated within the preExecute() method.
+// function void postExecute() {}
+
+// Called to return a user-defined error message when an error occurs.
+// function string getMessage() {}
+]]></attr>
+</Node>
+<Node enabled="enabled" fileURL="port:$0.File_Path_Name:source" guiName="Read Error File" guiX="271" guiY="175" id="READ_ERROR_FILE" skipSourceRows="0" type="DATA_READER"/>
+<Edge debugMode="true" fromNode="GET_FILE_INFO:0" guiBendpoints="" guiRouter="Manhattan" id="Edge8" inPort="Port 0 (input)" metadata="Metadata4" outPort="Port 0 (out)" toNode="READ_ERROR_FILE:0"/>
+<Edge debugMode="true" fromNode="READ_ERROR_FILE:0" guiBendpoints="" guiRouter="Manhattan" id="Edge1" inPort="Port 0 (input)" metadata="Metadata0" outPort="Port 0 (output)" toNode="ADD_RECORDS_TO_OUTPUT:0"/>
+</Phase>
+</Graph>

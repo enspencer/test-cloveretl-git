@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GraphParameters>
+<GraphParameter name="DATAIN_01_DIR" value="${DATAIN_DIR}/01-Automation-BasicFileProcessing">
+<SingleType multiple="false" name="file" selectionMode="directory_only"/>
+</GraphParameter>
+<GraphParameter name="DATAOUT_01_DIR" value="${DATAOUT_DIR}/${RUN_ID}/01-Automation-BasicFileProcessing">
+<SingleType multiple="false" name="file" selectionMode="directory_only"/>
+</GraphParameter>
+<GraphParameter name="DATATMP_01_DIR" value="${DATATMP_DIR}/${RUN_ID}/01-Automation-BasicFileProcessing">
+<SingleType multiple="false" name="file" selectionMode="directory_only"/>
+</GraphParameter>
+</GraphParameters>

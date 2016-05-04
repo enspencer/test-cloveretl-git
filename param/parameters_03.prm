@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GraphParameters>
+<GraphParameter name="DATAIN_03_DIR" value="${DATAIN_DIR}/03-ErrorHandling-Basic">
+<SingleType multiple="false" name="file" selectionMode="directory_only"/>
+</GraphParameter>
+<GraphParameter name="DATAOUT_03_DIR" value="${DATAOUT_DIR}/${RUN_ID}/03-ErrorHandling-Basic">
+<SingleType multiple="false" name="file" selectionMode="directory_only"/>
+</GraphParameter>
+<GraphParameter name="DATATMP_03_DIR" value="${DATATMP_DIR}/${RUN_ID}/03-ErrorHandling-Basic">
+<SingleType multiple="false" name="file" selectionMode="directory_only"/>
+</GraphParameter>
+</GraphParameters>

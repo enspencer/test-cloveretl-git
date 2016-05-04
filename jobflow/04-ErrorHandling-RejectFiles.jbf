@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Graph author="Wesley" created="Fri Aug 03 11:41:19 CEST 2012" guiVersion="4.0.0.M1" id="1343987710301" licenseType="Commercial" modified="Tue Mar 25 15:40:26 CET 2014" modifiedBy="User" name="example04_A" nature="jobflow" revision="1.37" showComponentDetails="true">
+<Global>
+<Metadata id="ExecuteGraph_RunStatus" previewAttachmentCharset="ISO-8859-1">
+<Record fieldDelimiter="|" name="ExecuteGraph_RunStatus" previewAttachmentCharset="ISO-8859-1" recordDelimiter="\n" recordSize="-1" type="delimited">
+<Field eofAsDelimiter="false" name="runId" nullable="true" shift="0" size="0" type="long"/>
+<Field eofAsDelimiter="false" name="originalJobURL" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" format="yyyy-MM-dd" name="startTime" nullable="true" shift="0" size="0" type="date"/>
+<Field eofAsDelimiter="false" format="yyyy-MM-dd" name="endTime" nullable="true" shift="0" size="0" type="date"/>
+<Field eofAsDelimiter="false" name="duration" nullable="true" shift="0" size="0" type="long"/>
+<Field eofAsDelimiter="false" name="status" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" name="errException" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" name="errMessage" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" name="errComponent" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" name="errComponentType" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" name="invalidDate" nullable="true" shift="0" size="0" type="long"/>
+<Field eofAsDelimiter="false" name="invalidIDorZIP" nullable="true" shift="0" size="0" type="long"/>
+<Field eofAsDelimiter="false" name="illegalState" nullable="true" shift="0" size="0" type="long"/>
+<Field eofAsDelimiter="false" name="validRecords" nullable="true" shift="0" size="0" type="long"/>
+<Field eofAsDelimiter="false" format="yyyy-MM-dd HH:mm:ss" name="executionTime" nullable="true" shift="0" size="0" type="date"/>
+</Record>
+</Metadata>
+<GraphParameters>
+<GraphParameterFile fileURL="param/parameters_04.prm"/>
+<GraphParameterFile fileURL="workspace.prm"/>
+</GraphParameters>
+<Note alignment="1" backgroundColorB="255" backgroundColorG="255" backgroundColorR="255" enabled="true" folded="false" height="185" id="Note6" textColorB="0" textColorG="0" textColorR="0" textFontSize="8" title="Notes" titleColorB="0" titleColorG="0" titleColorR="0" titleFontSize="10" width="270" x="650" y="103">
+<attr name="text"><![CDATA[Related Processes:
+- 04-ErrorHandling-RejectFiles.jbf (Main)
+- 04-ErrorHandling-RejectFiles-subjobflow.jbf
+- 04-Graph-1.grf
+- 04-Graph-2.grf
+- 04-Graph-3.grf
+
+Notes:
+- parameters and dictionary entires are used extensively to facilitate transactions in this example]]></attr>
+</Note>
+<Note alignment="1" backgroundColorB="255" backgroundColorG="255" backgroundColorR="255" enabled="true" folded="false" height="185" id="Note2" textColorB="0" textColorG="0" textColorR="0" textFontSize="8" title="A. Scenario" titleColorB="64" titleColorG="64" titleColorR="64" titleFontSize="10" width="211" x="20" y="103">
+<attr name="text"><![CDATA[To validate an input file and organize data errors according to pre-defined rules and manage an overall of statistics on data]]></attr>
+</Note>
+<Note alignment="2" backgroundColorB="64" backgroundColorG="64" backgroundColorR="64" enabled="true" folded="false" height="84" id="Note3" textColorB="255" textColorG="255" textColorR="255" textFontSize="10" title="Example 04: Handling Reject Files" titleColorB="255" titleColorG="255" titleColorR="255" titleFontSize="13" width="900" x="20" y="20">
+<attr name="text"><![CDATA[
+This example shows how to manage and consolidate error logs
+]]></attr>
+</Note>
+<Note alignment="1" backgroundColorB="255" backgroundColorG="255" backgroundColorR="255" enabled="true" folded="false" height="185" id="Note4" textColorB="0" textColorG="0" textColorR="0" textFontSize="8" title="B. Problem" titleColorB="0" titleColorG="0" titleColorR="0" titleFontSize="10" width="211" x="230" y="103">
+<attr name="text"><![CDATA[To separate errors by types
+
+To produce consolidated report with statistics and error details]]></attr>
+</Note>
+<Note alignment="1" backgroundColorB="255" backgroundColorG="255" backgroundColorR="255" enabled="true" folded="false" height="185" id="Note5" textColorB="0" textColorG="0" textColorR="0" textFontSize="8" title="C. Solution" titleColorB="0" titleColorG="0" titleColorR="0" titleFontSize="10" width="211" x="440" y="103">
+<attr name="text"><![CDATA[Apply validation rules on the input file
+
+Separately log errors that fail the validation rules
+
+Gather record stats
+
+Consolidate errors into a single spreadsheet]]></attr>
+</Note>
+<Note alignment="1" backgroundColorB="225" backgroundColorG="255" backgroundColorR="255" enabled="true" folded="false" height="209" id="Note1" textColorB="0" textColorG="0" textColorR="0" textFontSize="8" title="Consolidate Rejects" titleColorB="0" titleColorG="0" titleColorR="0" titleFontSize="10" width="192" x="487" y="322">
+<attr name="text"><![CDATA[
+
+
+
+
+
+
+
+
+
+
+Consolidates all reject files into a detailed spreadsheet]]></attr>
+</Note>
+<Note alignment="1" backgroundColorB="225" backgroundColorG="255" backgroundColorR="255" enabled="true" folded="false" height="259" id="Note7" textColorB="0" textColorG="0" textColorR="0" textFontSize="8" title="Validation" titleColorB="0" titleColorG="0" titleColorR="0" titleFontSize="10" width="192" x="20" y="322">
+<attr name="text"><![CDATA[
+
+
+
+
+
+
+
+
+
+
+Validates file and produces reject files which are consolidated in a later step
+
+Stats on rejected records are passed to next step for reporting]]></attr>
+</Note>
+<Dictionary/>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" guiName="Consolidate Reject Files" guiX="505" guiY="361" id="CONSOLIDATE_REJECT_FILES" jobURL="${JOBFLOW_DIR}/04-ErrorHandling-RejectFiles-subjobflow.jbf" type="EXECUTE_JOBFLOW">
+<attr name="inputMapping"><![CDATA[//#CTL2
+
+// Transforms input record into output record.
+function integer transform() {
+	$out.1.OUTPUT_DIR = "${DATAOUT_04_DIR}";
+
+	return OK;
+}
+
+// Called during component initialization.
+// function boolean init() {}
+
+// Called during each graph run before the transform is executed. May be used to allocate and initialize resources
+// required by the transform. All resources allocated within this method should be released
+// by the postExecute() method.
+// function void preExecute() {}
+
+// Called only if transform() throws an exception.
+// function integer transformOnError(string errorMessage, string stackTrace) {}
+
+// Called during each graph run after the entire transform was executed. Should be used to free any resources
+// allocated within the preExecute() method.
+// function void postExecute() {}
+
+// Called to return a user-defined error message when an error occurs.
+// function string getMessage() {}
+]]></attr>
+<attr name="outputMapping"><![CDATA[//#CTL2
+
+// Transforms input record into output record.
+function integer transform() {
+	$out.0.runId = $in.0.runId;
+	$out.0.originalJobURL = $in.0.originalJobURL;
+	$out.0.startTime = $in.0.startTime;
+	$out.0.endTime = $in.0.endTime;
+	$out.0.duration = $in.0.duration;
+	$out.0.status = $in.0.status;
+	$out.0.errException = $in.0.errException;
+	$out.0.errMessage = $in.0.errMessage;
+	$out.0.errComponent = $in.0.errComponent;
+	$out.0.errComponentType = $in.0.errComponentType;
+	$out.0.invalidDate = $in.0.invalidDate;
+	$out.0.invalidIDorZIP = $in.0.invalidIDorZIP;
+	$out.0.illegalState = $in.0.illegalState;
+	$out.0.validRecords = $in.0.validRecords;
+	$out.0.executionTime = $in.0.executionTime;
+
+	return OK;
+}
+
+// Called during component initialization.
+// function boolean init() {}
+
+// Called during each graph run before the transform is executed. May be used to allocate and initialize resources
+// required by the transform. All resources allocated within this method should be released
+// by the postExecute() method.
+// function void preExecute() {}
+
+// Called only if transform() throws an exception.
+// function integer transformOnError(string errorMessage, string stackTrace) {}
+
+// Called during each graph run after the entire transform was executed. Should be used to free any resources
+// allocated within the preExecute() method.
+// function void postExecute() {}
+
+// Called to return a user-defined error message when an error occurs.
+// function string getMessage() {}
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Job Complete" guiX="961" guiY="363" id="JOB_COMPLETE" type="SUCCESS"/>
+<Node enabled="enabled" guiName="Remove Temp Files" guiX="739" guiY="361" id="REMOVE_TEMP_FILES" type="DELETE_FILES">
+<attr name="inputMapping"><![CDATA[//#CTL2
+
+// Transforms input record into output record.
+function integer transform() {
+	$out.0.fileURL = "${DATAOUT_04_DIR}/*.dat";
+
+	return OK;
+}
+
+// Called during component initialization.
+// function boolean init() {}
+
+// Called during each graph run before the transform is executed. May be used to allocate and initialize resources
+// required by the transform. All resources allocated within this method should be released
+// by the postExecute() method.
+// function void preExecute() {}
+
+// Called only if transform() throws an exception.
+// function integer transformOnError(string errorMessage, string stackTrace) {}
+
+// Called during each graph run after the entire transform was executed. Should be used to free any resources
+// allocated within the preExecute() method.
+// function void postExecute() {}
+
+// Called to return a user-defined error message when an error occurs.
+// function string getMessage() {}
+]]></attr>
+<attr name="standardOutputMapping"><![CDATA[//#CTL2
+
+// Transforms input record into output record.
+function integer transform() {
+	$out.0.fileURL = $in.1.fileURL;
+	$out.0.result = $in.1.result;
+	$out.0.errorMessage = $in.1.errorMessage;
+
+	return OK;
+}
+
+// Called during component initialization.
+// function boolean init() {}
+
+// Called during each graph run before the transform is executed. May be used to allocate and initialize resources
+// required by the transform. All resources allocated within this method should be released
+// by the postExecute() method.
+// function void preExecute() {}
+
+// Called only if transform() throws an exception.
+// function integer transformOnError(string errorMessage, string stackTrace) {}
+
+// Called during each graph run after the entire transform was executed. Should be used to free any resources
+// allocated within the preExecute() method.
+// function void postExecute() {}
+
+// Called to return a user-defined error message when an error occurs.
+// function string getMessage() {}
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Report Reject Stats" guiX="266" guiY="361" id="REPORT_REJECT_STATS" jobURL="${GRAPH_DIR}/04-ErrorHandling-RejectFiles/04-Graph-2.grf" type="EXECUTE_GRAPH">
+<attr name="inputMapping"><![CDATA[//#CTL2
+
+// Transforms input record into output record.
+function integer transform() {
+	$out.2.dtInvalidDate = $in.0.invalidDate;
+	$out.2.dtInvalidIDorZIP = $in.0.invalidIDorZIP;
+	$out.2.dtIllegalState = $in.0.illegalState;
+	$out.2.dtValidRecords = $in.0.validRecords;
+	$out.2.dtExecutionTime = $in.0.executionTime;
+	$out.1.DATAOUT_DIR = "${DATAOUT_04_DIR}";
+
+	return OK;
+}
+
+// Called during component initialization.
+// function boolean init() {}
+
+// Called during each graph run before the transform is executed. May be used to allocate and initialize resources
+// required by the transform. All resources allocated within this method should be released
+// by the postExecute() method.
+// function void preExecute() {}
+
+// Called only if transform() throws an exception.
+// function integer transformOnError(string errorMessage, string stackTrace) {}
+
+// Called during each graph run after the entire transform was executed. Should be used to free any resources
+// allocated within the preExecute() method.
+// function void postExecute() {}
+
+// Called to return a user-defined error message when an error occurs.
+// function string getMessage() {}
+]]></attr>
+<attr name="outputMapping"><![CDATA[//#CTL2
+
+// Transforms input record into output record.
+function integer transform() {
+	$out.0.runId = $in.0.runId;
+	$out.0.originalJobURL = $in.0.originalJobURL;
+	$out.0.startTime = $in.0.startTime;
+	$out.0.endTime = $in.0.endTime;
+	$out.0.duration = $in.0.duration;
+	$out.0.status = $in.0.status;
+	$out.0.errException = $in.0.errException;
+	$out.0.errMessage = $in.0.errMessage;
+	$out.0.errComponent = $in.0.errComponent;
+	$out.0.errComponentType = $in.0.errComponentType;
+	$out.0.invalidDate = $in.0.invalidDate;
+	$out.0.invalidIDorZIP = $in.0.invalidIDorZIP;
+	$out.0.illegalState = $in.0.illegalState;
+	$out.0.validRecords = $in.0.validRecords;
+	$out.0.executionTime = $in.0.executionTime;
+
+	return OK;
+}
+
+// Called during component initialization.
+// function boolean init() {}
+
+// Called during each graph run before the transform is executed. May be used to allocate and initialize resources
+// required by the transform. All resources allocated within this method should be released
+// by the postExecute() method.
+// function void preExecute() {}
+
+// Called only if transform() throws an exception.
+// function integer transformOnError(string errorMessage, string stackTrace) {}
+
+// Called during each graph run after the entire transform was executed. Should be used to free any resources
+// allocated within the preExecute() method.
+// function void postExecute() {}
+
+// Called to return a user-defined error message when an error occurs.
+// function string getMessage() {}
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Validate Inputs" guiX="41" guiY="361" id="VALIDATE_INPUTS1" jobURL="${GRAPH_DIR}/04-ErrorHandling-RejectFiles/04-Graph-1.grf" type="EXECUTE_GRAPH">
+<attr name="inputMapping"><![CDATA[//#CTL2
+
+// Transforms input record into output record.
+function integer transform() {
+	$out.1.OUTPUT_DIR = "${DATAOUT_04_DIR}";
+
+	return OK;
+}
+
+// Called during component initialization.
+// function boolean init() {}
+
+// Called during each graph run before the transform is executed. May be used to allocate and initialize resources
+// required by the transform. All resources allocated within this method should be released
+// by the postExecute() method.
+// function void preExecute() {}
+
+// Called only if transform() throws an exception.
+// function integer transformOnError(string errorMessage, string stackTrace) {}
+
+// Called during each graph run after the entire transform was executed. Should be used to free any resources
+// allocated within the preExecute() method.
+// function void postExecute() {}
+
+// Called to return a user-defined error message when an error occurs.
+// function string getMessage() {}
+]]></attr>
+<attr name="outputMapping"><![CDATA[//#CTL2
+
+// Transforms input record into output record.
+function integer transform() {
+	$out.0.runId = $in.1.runId;
+	$out.0.originalJobURL = $in.1.originalJobURL;
+	$out.0.startTime = $in.1.startTime;
+	$out.0.endTime = $in.1.endTime;
+	$out.0.duration = $in.1.duration;
+	$out.0.status = $in.1.status;
+	$out.0.errException = $in.1.errException;
+	$out.0.errMessage = $in.1.errMessage;
+	$out.0.errComponent = $in.1.errComponent;
+	$out.0.errComponentType = $in.1.errComponentType;
+	$out.0.invalidDate = $in.3.inputPort_0_R02_INVALID_DATE_totalRecords;
+	$out.0.invalidIDorZIP = $in.3.inputPort_0_R03_INVALID_ID_OR_ZIP_totalRecords;
+	$out.0.validRecords = $in.3.inputPort_0_VALID_OUTPUT_totalRecords;
+	$out.0.illegalState = $in.3.inputPort_0_R01_ILLEGAL_STATE_totalRecords;
+	$out.0.executionTime = long2date($in.3.graph_startTime);
+
+	return OK;
+}
+
+// Called during component initialization.
+// function boolean init() {}
+
+// Called during each graph run before the transform is executed. May be used to allocate and initialize resources
+// required by the transform. All resources allocated within this method should be released
+// by the postExecute() method.
+// function void preExecute() {}
+
+// Called only if transform() throws an exception.
+// function integer transformOnError(string errorMessage, string stackTrace) {}
+
+// Called during each graph run after the entire transform was executed. Should be used to free any resources
+// allocated within the preExecute() method.
+// function void postExecute() {}
+
+// Called to return a user-defined error message when an error occurs.
+// function string getMessage() {}
+]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="CONSOLIDATE_REJECT_FILES:0" guiBendpoints="" guiRouter="Manhattan" id="Edge4" inPort="Port 0 (in)" metadata="ExecuteGraph_RunStatus" outPort="Port 0 (out)" toNode="REMOVE_TEMP_FILES:0"/>
+<Edge debugMode="true" fromNode="REMOVE_TEMP_FILES:0" guiBendpoints="" guiRouter="Manhattan" id="Edge2" inPort="Port 0 (in)" outPort="Port 0 (out)" toNode="JOB_COMPLETE:0"/>
+<Edge debugMode="true" fromNode="REPORT_REJECT_STATS:0" guiBendpoints="" guiRouter="Manhattan" id="Edge3" inPort="Port 0 (in)" metadata="ExecuteGraph_RunStatus" outPort="Port 0 (out)" toNode="CONSOLIDATE_REJECT_FILES:0"/>
+<Edge debugMode="true" fromNode="VALIDATE_INPUTS1:0" guiBendpoints="" guiRouter="Manhattan" id="Edge0" inPort="Port 0 (in)" metadata="ExecuteGraph_RunStatus" outPort="Port 0 (out)" toNode="REPORT_REJECT_STATS:0"/>
+</Phase>
+</Graph>

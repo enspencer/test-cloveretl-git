@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GraphParameters>
+<GraphParameter name="BIN_DIR" value="${PROJECT}/bin">
+<ComponentReference referencedComponent="GET_MD5_SIGNATURE_WINDOWS" referencedProperty="workingDirectory"/>
+</GraphParameter>
+<GraphParameter name="DATAIN_07_DIR" value="${DATAIN_DIR}/07-ExternalInteraction-ShellScript">
+<ComponentReference referencedComponent="LIST_FILES" referencedProperty="fileURL"/>
+</GraphParameter>
+</GraphParameters>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Graph author="Wesley" created="Fri Aug 03 11:41:19 CEST 2012" guiVersion="4.0.0.M1" id="1343990731805" licenseType="Commercial" modified="Tue Mar 25 15:15:51 CET 2014" modifiedBy="User" name="example04_1" revision="1.35" showComponentDetails="true">
+<Global>
+<Metadata id="Metadata0" previewAttachment="${DATAIN_04_DIR}/customer_details_01.dat" previewAttachmentCharset="ISO-8859-1">
+<Record fieldDelimiter="|" label="customer_details_01.dat" name="customer_details" previewAttachment="${DATAIN_04_DIR}/customer_details_01.dat" previewAttachmentCharset="ISO-8859-1" quoteChar="both" quotedStrings="false" recordDelimiter="\r\n" skipSourceRows="1" type="delimited">
+<Field name="customerId" type="string"/>
+<Field name="firstname" type="string"/>
+<Field name="lastname" type="string"/>
+<Field name="address" type="string"/>
+<Field name="city" type="string"/>
+<Field name="zipcode" type="string"/>
+<Field name="state" type="string"/>
+<Field eofAsDelimiter="false" name="createdDate" type="string"/>
+</Record>
+</Metadata>
+<Metadata id="Metadata1">
+<Record fieldDelimiter="|" name="recordName" recordDelimiter="\n" type="delimited">
+<Field eofAsDelimiter="false" name="customerId" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" name="firstname" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" name="lastname" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" name="address" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" name="city" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" name="zipcode" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" name="state" nullable="true" shift="0" size="0" type="string"/>
+<Field eofAsDelimiter="false" name="createdDate" nullable="true" shift="0" size="0" type="date"/>
+</Record>
+</Metadata>
+<GraphParameters>
+<GraphParameterFile fileURL="param/parameters_04.prm"/>
+<GraphParameterFile fileURL="workspace.prm"/>
+</GraphParameters>
+<Note alignment="1" backgroundColorB="225" backgroundColorG="255" backgroundColorR="255" enabled="true" folded="false" height="156" id="Note1" textColorB="0" textColorG="0" textColorR="0" textFontSize="8" title="Example 04-1: Record Validation Process" titleColorB="0" titleColorG="0" titleColorR="0" titleFontSize="10" width="558" x="20" y="20">
+<attr name="text"><![CDATA[
+1. Read data from source file
+
+2. Go through validation rules - R01, R02, and R03
+
+3. Write out a separate file with error records based on each rule
+
+4. Output all valid records to a new file]]></attr>
+</Note>
+<Dictionary/>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" guiName="Format Output" guiX="901" guiY="426" id="FORMAT_OUTPUT" type="REFORMAT">
+<attr name="transform"><![CDATA[//#CTL2
+
+// Transforms input record into output record.
+function integer transform() {
+	$out.0.customerId = $in.0.customerId;
+	$out.0.firstname = $in.0.firstname;
+	$out.0.lastname = $in.0.lastname;
+	$out.0.address = $in.0.address;
+	$out.0.city = $in.0.city;
+	$out.0.zipcode = $in.0.zipcode;
+	$out.0.state = $in.0.state;
+	$out.0.createdDate = str2date($in.0.createdDate, "yyyy-MM-dd");
+
+	return OK;
+}
+
+// Called during component initialization.
+// function boolean init() {}
+
+// Called during each graph run before the transform is executed. May be used to allocate and initialize resources
+// required by the transform. All resources allocated within this method should be released
+// by the postExecute() method.
+// function void preExecute() {}
+
+// Called only if transform() throws an exception.
+// function integer transformOnError(string errorMessage, string stackTrace) {}
+
+// Called during each graph run after the entire transform was executed. Should be used to free any resources
+// allocated within the preExecute() method.
+// function void postExecute() {}
+
+// Called to return a user-defined error message when an error occurs.
+// function string getMessage() {}
+]]></attr>
+</Node>
+<Node append="false" enabled="enabled" fileURL="${OUTPUT_DIR}/${BAD_ST_ABBV}" guiName="R01: Illegal state" guiX="25" guiY="622" id="R01_ILLEGAL_STATE" makeDirs="true" type="DATA_WRITER"/>
+<Node enabled="enabled" guiName="R01 - Validate State" guiX="20" guiY="426" id="R01_VALIDATE_STATE" type="EXT_FILTER">
+<attr name="filterExpression"><![CDATA[//#CTL2
+length($in.0.state) == 2]]></attr>
+</Node>
+<Node append="false" enabled="enabled" fileURL="${OUTPUT_DIR}/${BAD_CRT_DATE}" guiName="R02: Invalid Date" guiX="335" guiY="622" id="R02_INVALID_DATE" makeDirs="true" type="DATA_WRITER"/>
+<Node enabled="enabled" guiName="R02 - Validate Date" guiX="334" guiY="426" id="R02_VALIDATE_DATE" type="EXT_FILTER">
+<attr name="filterExpression"><![CDATA[//#CTL2
+isDate($in.0.createdDate, "yyyy-MM-dd")]]></attr>
+</Node>
+<Node append="false" enabled="enabled" fileURL="${OUTPUT_DIR}/${BAD_ID_ZIP}" guiName="R03: Invalid ID or ZIP" guiX="612" guiY="622" id="R03_INVALID_ID_OR_ZIP" makeDirs="true" type="DATA_WRITER"/>
+<Node enabled="enabled" guiName="R03 - Validate ID &amp; ZIP" guiX="612" guiY="426" id="R03_VALIDATE_ID_ZIP" type="EXT_FILTER">
+<attr name="filterExpression"><![CDATA[//#CTL2
+(isInteger($in.0.customerId) AND length($in.0.customerId) == 6) AND (isInteger($in.0.zipcode) AND length($in.0.zipcode) == 5)]]></attr>
+</Node>
+<Node enabled="enabled" fileURL="${DATAIN_04_DIR}/${INPUT_FILE}" guiName="Read Customer Details" guiX="20" guiY="229" id="READ_CUSTOMER_DETAILS" skipRows="1" type="DATA_READER" verbose="false"/>
+<Node enabled="enabled" existingSheetsActions="DO_NOTHING" fileURL="${OUTPUT_DIR}/${CLEANED_OUTPUT}" guiName="Valid Output" guiX="901" guiY="622" id="VALID_OUTPUT" makeDirs="true" sheet="Valid Records" type="SPREADSHEET_WRITER" writeMode="OVERWRITE_SHEET_IN_MEMORY"/>
+<Edge debugMode="true" fromNode="FORMAT_OUTPUT:0" guiBendpoints="" guiRouter="Manhattan" id="Edge4" inPort="Port 0 (input)" metadata="Metadata1" outPort="Port 0 (out)" toNode="VALID_OUTPUT:0"/>
+<Edge debugMode="true" fromNode="R01_VALIDATE_STATE:0" guiBendpoints="" guiRouter="Manhattan" id="Edge6" inPort="Port 0 (in)" outPort="Port 0 (accepted)" toNode="R02_VALIDATE_DATE:0"/>
+<Edge debugMode="true" fromNode="R01_VALIDATE_STATE:1" guiBendpoints="" guiRouter="Manhattan" id="Edge7" inPort="Port 0 (in)" outPort="Port 1 (rejected)" toNode="R01_ILLEGAL_STATE:0"/>
+<Edge debugMode="true" fromNode="R02_VALIDATE_DATE:0" guiBendpoints="" guiRouter="Manhattan" id="Edge8" inPort="Port 0 (in)" outPort="Port 0 (accepted)" toNode="R03_VALIDATE_ID_ZIP:0"/>
+<Edge debugMode="true" fromNode="R02_VALIDATE_DATE:1" guiBendpoints="" guiRouter="Manhattan" id="Edge9" inPort="Port 0 (in)" outPort="Port 1 (rejected)" toNode="R02_INVALID_DATE:0"/>
+<Edge debugMode="true" fromNode="R03_VALIDATE_ID_ZIP:0" guiBendpoints="" guiRouter="Manhattan" id="Edge10" inPort="Port 0 (in)" outPort="Port 0 (accepted)" toNode="FORMAT_OUTPUT:0"/>
+<Edge debugMode="true" fromNode="R03_VALIDATE_ID_ZIP:1" guiBendpoints="" guiRouter="Manhattan" id="Edge11" inPort="Port 0 (in)" outPort="Port 1 (rejected)" toNode="R03_INVALID_ID_OR_ZIP:0"/>
+<Edge debugMode="true" fromNode="READ_CUSTOMER_DETAILS:0" guiBendpoints="" guiRouter="Manhattan" id="Edge0" inPort="Port 0 (in)" metadata="Metadata0" outPort="Port 0 (output)" toNode="R01_VALIDATE_STATE:0"/>
+</Phase>
+</Graph>
